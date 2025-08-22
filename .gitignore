@@ -18,3 +18,8 @@ env/
 # IDE
 .vscode/
 .idea/
+
+
+
+# Playwright Profiles
+profiles/
