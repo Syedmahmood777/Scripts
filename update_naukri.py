@@ -22,10 +22,7 @@ async def main():
         await page.goto("https://www.naukri.com/mnjuser/profile?id=&altresid", timeout=60_000) # Change this to the profile URL you copied from your Naukri profile 
 
         file_input = await page.wait_for_selector('input[type="file"]', timeout=10000)
-        resume_files = [
-            rf"C:\Users\syedm\Downloads\Syed_NCV.pdf",
-            rf"C:\Users\syedm\Downloads\Syed_SE.pdf"
-        ]   #add your resume paths here if you have multiple resumes to choose from else just keep one path in the list
+        resume_files = [ rf"C:\Users\syedm\Downloads\Syed_NCV.pdf"]   #add your resume paths here if you have multiple resumes to choose from else just keep one path in the list
 
         resume_path = random.choice(resume_files)
       
