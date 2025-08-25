@@ -24,12 +24,22 @@ A Python automation toolkit for managing browser sessions and automating various
 
 ## Installation
 
-1. Install the required dependencies:
+1. Clone the repository:
+```bash
+git clone https://github.com/Syedmahmood777/Scripts.git
+```
+
+2. Navigate to the scripts directory:
+```bash
+cd scripts
+```
+
+3. Install the required dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Install Playwright browsers:
+4. Install Playwright browsers:
 ```bash
 python -m playwright install
 ```
