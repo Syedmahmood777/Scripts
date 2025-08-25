@@ -31,7 +31,7 @@ pip install -r requirements.txt
 
 2. Install Playwright browsers:
 ```bash
-playwright install
+python -m playwright install
 ```
 
 ## Available Modules
