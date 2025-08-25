@@ -60,9 +60,28 @@ async def main():
         print(f"\n🌐 Opening {site_url} with profile '{profile_name}'...")
         await page.goto(site_url, timeout=60_000)
 
-        print("👉 Browser will stay open until you close it.")
-        await page.wait_for_event("close",timeout=None)
-        await ctx.close()
+        print("👉 Browser will stay open until you close it manually.")
+        print("👉 Or press Ctrl+C in this terminal to stop the script.")
+        
+        try:
+            # Wait for either keyboard interrupt OR browser closure
+            while True:
+                # Check if browser is still alive
+                try:
+                    await page.evaluate("1")  # Simple check if page is still responsive
+                    await asyncio.sleep(1)
+                except:
+                    print("\n🌐 Browser was closed manually.")
+                    break
+        except KeyboardInterrupt:
+            print("\n🛑 Script interrupted by user (Ctrl+C).")
+        finally:
+            try:
+                print("🔒 Closing browser context...")
+                await ctx.close()
+            except:
+                pass
 
+            
 if __name__ == "__main__":
     asyncio.run(main())
