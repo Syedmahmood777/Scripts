@@ -61,7 +61,7 @@ async def main():
         await page.goto(site_url, timeout=60_000)
 
         print("👉 Browser will stay open until you close it.")
-        await page.wait_for_event("close")
+        await page.wait_for_event("close",timeout=None)
         await ctx.close()
 
 if __name__ == "__main__":
