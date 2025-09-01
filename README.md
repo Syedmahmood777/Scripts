@@ -64,7 +64,7 @@ Cookie Collector saves all your browser sessions, so automation doesn't require 
 python cookie_collector.py your_profile_name https://www.naukri.com
 ```
 
-3. **Login Process**: After running the script, log in to your account through the automated browser window then close the window once logged in.
+3. **Login Process**: After running the script, log in to your account through the automated browser window.
 
 ## Module-Specific Instructions
 
