@@ -3,7 +3,7 @@ from typing import List
 
 @dataclass
 class product:
-    id: int
+    pid: int
     name: str
     visual_price:str
     price:float
@@ -12,6 +12,7 @@ class product:
 class Log:
     id: int
     name: str
-    last_min_price:int
+    last_price:float
+    new_price:float
     url:str
     log_msg:str
