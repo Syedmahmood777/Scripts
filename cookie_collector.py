@@ -69,7 +69,7 @@ async def main():
                 # Check if browser is still alive
                 try:
                     await page.evaluate("1")  # Simple check if page is still responsive
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(300000)
                 except:
                     print("\n🌐 Browser was closed manually.")
                     break

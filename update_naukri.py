@@ -5,7 +5,7 @@ from playwright.async_api import async_playwright
 import datetime
 import random
 
-PROFILE_DIR = Path("YOUR_ABSOULTE_PROFILE_PATH_HERE")  # Mine was C:/Users/syedm/OneDrive/Desktop/Scripts/profiles/syed
+PROFILE_DIR = Path("/home/syed/Downloads/Workspace/Scripts/profiles/syed")  # Mine was C:/Users/syedm/OneDrive/Desktop/Scripts/profiles/syed
                                                        # Right click on your profile name folder and copy path             
 async def main():
      async with async_playwright() as p:
@@ -14,7 +14,7 @@ async def main():
             channel="chrome",        # use installed Chrome
             headless=False,          # It's better to see the browser in action or it might not work as expected due to not seeing the UI
             args=["--disable-blink-features=AutomationControlled"],
-            ignore_default_args=["--enable-automation"]
+            ignore_default_args=["--enable-automation"],
         )
     
     
@@ -22,11 +22,11 @@ async def main():
         await page.goto("https://www.naukri.com/mnjuser/profile?id=&altresid", timeout=60_000) # Change this to the profile URL you copied from your Naukri profile 
 
         file_input = await page.wait_for_selector('input[type="file"]', timeout=10000)
-        resume_files = [ rf"C:\Users\syedm\Downloads\Syed_NCV.pdf"]   #add your resume paths here if you have multiple resumes to choose from else just keep one path in the list
+        resume_files = ["/home/syed/Downloads/Syed_NCV.pdf", "/home/syed/Downloads/Syed_SE.pdf"]  #add your resume paths here if you have multiple resumes to choose from else just keep one path in the list
 
         resume_path = random.choice(resume_files)
       
-        log_path = rf"C:\Users\syedm\OneDrive\Desktop\Scripts\log.txt" # Path to your log file which should be just in the same folder as this script so just copy path till root folder and add log.txt at the end like I did here
+        log_path = "/home/syed/cron_tasks/naukri_log.txt" # Path to your log file which should be just in the same folder as this script so just copy path till root folder and add log.txt at the end like I did here
         status = ""
         try:
             await file_input.set_input_files(resume_path)
