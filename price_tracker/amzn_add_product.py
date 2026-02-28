@@ -36,7 +36,7 @@ async def main():
 
             await page.goto(product_url, timeout=60_000) 
 
-            await page.wait_for_selector("span.a-price span.a-offscreen")
+            await page.wait_for_selector("span.a-price span.a-offscreen",state="attached")
             price_str = await page.locator("span.a-price span.a-offscreen").first.text_content()
             price_str= str(price_str) if price_str is not None else ""
             price_formatted = float(price_str.replace("₹", "").replace(",", "").strip())
