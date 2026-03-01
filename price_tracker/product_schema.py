@@ -8,7 +8,7 @@ class product:
     visual_price:str
     price:float
     url:str
-
+@dataclass
 class Log:
     id: int
     name: str
@@ -16,3 +16,4 @@ class Log:
     new_price:float
     url:str
     log_msg:str
+

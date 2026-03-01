@@ -12,6 +12,10 @@ from pathlib import Path
 from dataclasses import asdict
 from datetime import datetime
 from pot_schema import pot
+from product_schema import Log
+
+
+
 PROFILE_DIR = Path("/home/syed/Downloads/Workspace/Scripts/profiles/syed")  # Mine was C:/Users/syedm/OneDrive/Desktop/Scripts/profiles/syed
 
 async def main():
@@ -21,8 +25,12 @@ async def main():
     with open("price_over_time.json") as f:
                 pData= json.load(f)
 
+    with open("log.json") as f:
+                logD= json.load(f)
+
     potData= [pot(**item) for item in pData]
     product_list = [product(**item) for item in data]
+    logData= [Log(**item) for item in logD]
 
     temp_list=product_list.copy()
     async with async_playwright() as p:
@@ -49,18 +57,23 @@ async def main():
 
                 potData.append(pot(uid=len(potData),product_id=item.pid,price=price_formatted,timestamp=datetime.now().isoformat()))
                 if price_formatted<item.price:
+                    log_msg=f"Price for {item.name} has dropped from {item.price} to {price_formatted}. Check the URL:{item.url}"
+                    logData.append(Log(id=len(logData),name=item.name,last_price=item.price,new_price=price_formatted,url=item.url,log_msg=log_msg))
+
+                    # print("Max Price is less",price_formatted)
                     for pr in product_list:
                         if pr.pid == item.pid:
                             pr.price=price_formatted 
                             pr.visual_price=price_str 
 
                             break
-                            print("Max Price is less",price_formatted)
 
                     with open("products_list.json", "w") as f:
                         json.dump([asdict(p) for p in product_list], f, indent=2,   ensure_ascii=False)
 
-                else:print(f"\n Product Name {item.name} Product Price {item.price} is same\n ")
+                    with open("log.json", "w") as f:
+                        json.dump([asdict(p) for p in logData], f, indent=2,   ensure_ascii=False)
+                # else:print(f"\n Product Name {item.name} Product Price {item.price} is same\n ")
 
 
                 product_list = [product(**item) for item in data]
