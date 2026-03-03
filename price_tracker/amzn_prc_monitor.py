@@ -1,5 +1,5 @@
-
 import asyncio
+import os
 import json
 from pathlib import Path
 from playwright.async_api import async_playwright
@@ -15,17 +15,17 @@ from pot_schema import pot
 from product_schema import Log
 
 
-
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROFILE_DIR = Path("/home/syed/Downloads/Workspace/Scripts/profiles/syed")  # Mine was C:/Users/syedm/OneDrive/Desktop/Scripts/profiles/syed
 
 async def main():
-    with open("products_list.json") as f:
+    with open(os.path.join(BASE_DIR, "products_list.json")) as f:
                 data = json.load(f)
 
-    with open("price_over_time.json") as f:
+    with open(os.path.join(BASE_DIR, "price_over_time.json")) as f:
                 pData= json.load(f)
 
-    with open("log.json") as f:
+    with open(os.path.join(BASE_DIR, "log.json")) as f:
                 logD= json.load(f)
 
     potData= [pot(**item) for item in pData]
@@ -37,7 +37,7 @@ async def main():
         ctx = await p.chromium.launch_persistent_context(
             user_data_dir=str(PROFILE_DIR),
             channel="chrome",        # use installed Chrome
-            headless=False,          # It's better to see the browser in action or it might not work as expected due to not seeing the UI
+            headless=True,          # It's better to see the browser in action or it might not work as expected due to not seeing the UI
             args=["--disable-blink-features=AutomationControlled"],
             ignore_default_args=["--enable-automation"],
         )
@@ -68,26 +68,30 @@ async def main():
 
                             break
 
-                    with open("products_list.json", "w") as f:
+                    with open(os.path.join(BASE_DIR, "products_list.json"), "w") as f:
                         json.dump([asdict(p) for p in product_list], f, indent=2,   ensure_ascii=False)
 
-                    with open("log.json", "w") as f:
+                    with open(os.path.join(BASE_DIR, "log.json"), "w") as f:
+                        json.dump([asdict(p) for p in logData], f, indent=2,   ensure_ascii=False)
+                elif price_formatted>item.price:
+                    log_msg=f"Price for {item.name} has increased from {item.price} to {price_formatted}. Check the URL:{item.url}"
+                    logData.append(Log(id=len(logData),name=item.name,last_price=item.price,new_price=price_formatted,url=item.url,log_msg=log_msg))
+
+                    with open(os.path.join(BASE_DIR, "log.json"), "w") as f:
                         json.dump([asdict(p) for p in logData], f, indent=2,   ensure_ascii=False)
                 # else:print(f"\n Product Name {item.name} Product Price {item.price} is same\n ")
 
 
-                product_list = [product(**item) for item in data]
-                pid=len(product_list)
 
 
-                with open("price_over_time.json", "w") as f:
+                with open(os.path.join(BASE_DIR, "price_over_time.json"), "w") as f:
                     json.dump([asdict(p) for p in potData], f, indent=2,   ensure_ascii=False)
-
 
             except Exception as e:
                 print("This went wrong ",e)
-                return
-            # await asyncio.sleep(1)      
+            # await asyncio.sleep(1)  
+
+        print(f"Run on {datetime.now()}")
         await ctx.close()
  
         

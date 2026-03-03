@@ -1,4 +1,5 @@
 import asyncio
+import traceback
 import json
 from pathlib import Path
 from playwright.async_api import async_playwright
@@ -60,16 +61,16 @@ async def main():
             potData= [pot(**item) for item in pData]
             now=datetime.now()
             potData.append(pot(uid=len(potData),product_id=pid,price=price_formatted,timestamp=now.isoformat()))
-            print(product_list)
             with open("products_list.json", "w") as f:
                 json.dump([asdict(p) for p in product_list], f, indent=2,   ensure_ascii=False)
 
             with open("price_over_time.json", "w") as f:
                 json.dump([asdict(p) for p in potData], f, indent=2,   ensure_ascii=False,)
 
+            print("Worked")
         except Exception as e:
             print("This went wrong ",e)
-            return
+            traceback.print_exc()
         # await asyncio.sleep(1)      
         await ctx.close()
  
